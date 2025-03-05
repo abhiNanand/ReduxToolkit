@@ -1,0 +1,71 @@
+RTK
+----
+
+Redux ki complexity ko reduce karta hai aur state management ko easy aur efficient banata hai.
+
+Redux Toolkit me bohot saari cheezein built-in hoti hain jo traditional Redux me manually likhni padti thi.
+jaise ki store,redurcer, middleware manually likhtey hai pr rtk me configureStore sab kuch set up kr deta hai. 
+
+
+Redux Toolkit Ki Use Kya Hai?
+----------------------------- 
+
+React Redux Me Kya Kami Thi Jo Toolkit Ki Jarurat Padi?
+Traditional React-Redux me kaafi boilerplate code likhna padta tha. Yeh kuch major issues the jo Redux Toolkit ne solve kiye:
+
+1.Boilerplate Code: Redux me actions, reducers, constants alag likhne padte the. RTK me createSlice createSlice se yeh sab ek saath likh sakte hain.
+
+2.Middleware Setup: Redux me async operations ke liye redux-thunk ya redux-saga install aur configure karna padta tha.	RTK me redux-thunk by default included hota hai.
+
+3.Complex Store Setup: createStore aur combineReducers likhna padta tha.	RTK me configureStore se store setup easy ho gaya.
+=============================================================================
+agar purane projects maintain kar rahe ho jo traditional Redux pe bane hain, toh wahi React-Redux (without Toolkit) use karna better hoga.
+
+Agar tumhe abhi React-Redux sikhna hai, toh pehle traditional Redux samajhna important hai, jo tum pehle se seekh rahe ho! Uske baad Redux Toolkit seekhna easy ho jayega.
+
+=================================================================================================
+
+
+
+Installation:-
+
+npm install @reduxjs/toolkit react-redux
+ 
+ or 
+
+ using yarn
+
+ yarn add @reduxjs/toolkit react-redux
+
+
+=============================================================================
+
+Redux Toolkit includes these APIs:
+---------------------------------- 
+
+1.configureStore(): redux store bananta hai.
+2.createReducer(): createSlice use nhi karna tho ye kr lo.
+3.createAction():action types manually define nahi karna to yeka use kar lo.
+4.createSlice(): reducers aur actions ek saath likhne ka simple way deta hai.
+5.combineSlices():
+6.createAsyncThunk:handle async operations.
+7.createEntityAdapter:
+8.createSelector():
+
+
+ ============================================================================
+
+ RTK Query: 
+ 
+ --ye ek powerful and optimized library hai jo Redux toolkit ke andher hi include hoti hai. 
+
+ --iska main purpose hai api se data fetch karna, cache karna, update krna and state manage krna.    vo bhi bina extra boilerplate code likhe. 🚀
+
+✅ Redux store ke andar hi API responses store karta hai
+✅ Data caching aur automatic refetching provide karta hai
+✅ API se data fetch karne ke liye boilerplate code likhne ki zaroorat nahi
+✅ Hooks automatically generate karta hai (agar React ke saath use karein)
+✅ Multiple API calls handle karne ke liye optimized hai
+
+=============================================================================
+

@@ -1,0 +1,158 @@
+RTK Query 
+--------- 
+-ye data fetching and caching library ahi.
+-handle api calls and server-side data management ko handle karta hai.
+-RTK Query se aap complex data fetching logic ko easily manage kar sakte hain.
+
+ye build-in caching, automatic re-fetching and loading states provide karta hai. 
+
+Setting up your store and API service.
+
+
+//https://redux.js.org/tutorials/essentials/part-7-rtk-query-basics
+
+
+
+createApi;TK Query ka main function hai jo API fetching, caching, and state management handle karta hai.
+Ye ek single API slice banata hai jo Redux store ke andar hota hai, aur automatically hooks generate karta hai API calls ke liye.
+
+import {crateApi} from '@reduxjs/toolkit/query';
+
+Understanding createApi Parameters
+----------------------------------
+1️⃣ reducerPath:
+Ye Redux store me API slice ka naam define karta hai.
+Default: "api"
+Custom Name De Sakte Ho: "myCustomApi"
+
+
+ slice ek tarika hai ek saath reducer, actions, aur state define karne ka.Agar traditional Redux use karein, toh alag se reducer likhna, action types define karna aur action creators likhne padte hain.
+Lekin Redux Toolkit me createSlice function is process ko simplify kar deta hai!
+
+
+2️⃣ baseQuery
+------------- 
+-Ye ek function hai jo API request send karta hai.
+-RTK Query fetchBaseQuery ka use karta hai jo fetch ka wrapper hai (like Axios).Ye fetch API ka simplified version hai jo headers, params, base URL, and error handling ko automatically manage karta hai.
+
+3️⃣ endpoints
+API ke endpoints define karne ke liye ek function.
+
+Endpoint Kya Hota Hai?
+Endpoint API ka ek specific URL hota hai jo kisi functionality ya data ko access karne ke liye use hota hai.
+
+Agar server par multiple APIs hain, toh har API ka ek unique endpoint hota hai jo specific request handle karta hai.
+
+1.builder.query() → Data Fetching
+ 
+
+2.builder.mutation() → Data Mutation ke leye (POST, PUT, DELETE)
+Example:
+hum ek api se user data fetch, add aur delete karenge.
+
+endpoints: (builder) => ({
+    // 1️⃣ GET: Users ko fetch karne ka endpoint
+    getUsers: builder.query({
+      query: () => "users",
+    }),
+     // 2️⃣ POST: Naya user add karne ka endpoint
+    addUser: builder.mutation({
+      query: (newUser) => ({
+        url: "users",
+        method: "POST",
+        body: newUser,
+      }),
+    }),
+
+    // 3️⃣ DELETE: User delete karne ka endpoint
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+
+    =====================================================================
+
+    🔥 Thinking in RTK Query Caching
+Redux Toolkit Query (RTK Query) me state management ka sochne ka tareeka traditional Redux se thoda alag hai.
+
+👉 Traditional Redux me hum manually reducers likhte hain jo state ko update karte hain.
+👉 RTK Query me hum cached data ko manage karne par dhyan dete hain, na ki manually state update karne par.
+
+🛠 Redux vs RTK Query: Mindset Shift
+Traditional Redux ka approach kuch aisa hota hai:
+
+Action Dispatch → API call karne ke liye ek action dispatch karo.
+Thunk Middleware → Asynchronous API request ko handle karo.
+Reducer Update → Response milne ke baad state update karo.
+Component Subscribe → Updated state ko component me reflect karo.
+Lekin RTK Query me, hum caching ke terms me sochte hain:
+✅ "Data kis API se aa raha hai?"
+✅ "Ye update kaise send hoga?"
+✅ "Kab cached data ko re-fetch karna chahiye?"
+✅ "Cached data ka update kaise hoga?"
+
+Ab Redux sirf ek state container nahi hai, balki ek efficient data caching system ban jata hai.
+
+=========================================================================
+🔹 RTK Query Internal Workflow (Simplified)
+-------------------------------------------
+RTK Query ke andar bhi wahi steps hote hain jo Redux me hote hain, lekin ye automatically handle kiye jate hain:
+
+1️⃣ Thunk Middleware ka Use – RTK Query internally thunks ka use karke API requests ko handle karta hai.
+2️⃣ Actions Dispatch Hote Hain – API request ke success ya failure hone par actions dispatch hote hain.
+3️⃣ Reducers Data Cache Karte Hain – Data automatically Redux store me cache hota hai.
+
+Matlab hume manually reducers likhne ki zaroorat nahi hoti, RTK Query khud hi state update kar deta hai.
+
+================--------------------------------=========================
+🚀 RTK Query Me Caching Kaise Kaam Karti Hai?
+RTK Query me cached data ka concept server state management ko efficient banata hai. Jab hum API request bhejte hain:
+
+✅ Agar data pehle se cache me hai, toh naya request nahi bhejega, balki cache ka data use karega.
+✅ Agar data update ho gaya hai, toh cached version ko automatically refresh karega.
+✅ Hum manual cache invalidation bhi kar sakte hain, taaki hum cache ko kab update karna hai decide kar sakein.
+=========================================================================
+🔥 Bundle Size in RTK Query
+Jab hum RTK Query use karte hain, toh ye application ke bundle size me ek fixed amount add karta hai.
+Lekin ye size bahut chhota hota hai aur manual API handling ki coding hatane ka benefit isse zyada hota hai.
+
+📌 RTK Query ka Bundle Size Kitna Hai?
+RTK Query ka size depend karta hai ki tum Redux Toolkit (RTK) already use kar rahe ho ya nahi:
+
+✅ Agar Redux Toolkit pehle se use ho raha hai:
+
+RTK Query ka size: ~9KB (minified + gzipped)
+Hooks ka size: ~2KB
+(Total: ~11KB)
+✅ Agar Redux Toolkit already use nahi ho raha:
+
+Redux Toolkit + RTK Query (without React): ~17KB
+Redux Toolkit + RTK Query (with React): ~19KB + React-Redux dependency
+📌 Additional endpoints ka size increase nahi hota (sirf endpoint ke andar likha actual code hi add hota hai).
+
+🔥 Bundle Size ke Benefits
+💡 RTK Query ka chhota size iske benefits ke saamne negligible hota hai:
+✅ Manual API handling ke liye likhne wale extra code ko remove karta hai
+✅ Data fetching ke liye alag-alag libraries (Axios, React Query) ki zaroorat nahi padti
+✅ Built-in caching aur automatic re-fetching provide karta hai
+✅ Performance optimization ke liye background polling, caching, aur batching ka support deta hai
+
+🎯 Conclusion: RTK Query is Worth It!
+✔️ Haath se likhi bohot saari extra API logic ko remove kar deta hai.
+✔️ Caching aur state management ko optimize karta hai.
+✔️ Bundle size ka impact minimal hota hai (~9KB extra) jo ki uske benefits ke saamne kuch bhi nahi.
+
+Agar Redux use kar rahe ho, toh RTK Query ko add karna ek smart choice hai! 🚀
+=======================================================================
+
+Defining an API Slice:
+----------------------
+
+Previously, we've defined separate "slices" for each of our different data types like Posts, Users, and Notifications. Each slice had its own reducer, defined its own actions and thunks, and cached the entries for that data type separately.
+
+With RTK Query, the logic for managing cached data is centralized into a single "API slice" per application. 
+
+############In much the same way that you have a single Redux store per app, we now have a single slice for all our cached data.
+##############
+

@@ -1,0 +1,123 @@
+🔥 Caching in RTK Query
+RTK Query automatically caches API responses to avoid unnecessary network requests. It manages caching, re-fetching, and invalidation efficiently.
+
+show name and id . add name:
+
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+export const apiSlice = createApi({
+  reducerPath: 'api',
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }), 
+  endpoints: (builder) => ({
+    getNames: builder.query({
+      query: () => 'names',
+    }),
+    addName:builder.mutation({query:(newName)=>({url:'names',method:'POST',body:newName,}),}),
+  }),
+});
+
+export const { useGetNamesQuery, useAddNameMutation } = apiSlice;
+
+--------------------------------------------''
+import React,{useState} from 'react';
+import { useGetNamesQuery,useAddNameMutation } from './apiSlice';
+
+const App = () => {
+
+  const { data: names, error, isLoading } = useGetNamesQuery();
+  const [addName] =useAddNameMutation();
+  const [name,setName]=useState('');
+
+const handleSubmit = async(e)=>
+{
+   
+  e.preventDefault();
+  await addName({name}).unwrap();
+  setName('');
+}
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching names.</p>;
+
+  return (
+    <div>
+     <form onSubmit={handleSubmit}>
+      <label htmlFor="fname">Name:</label>
+      <input type="text" id="fname" value={name} name="fname" onChange={(e)=>setName(e.target.value)} placeholder='enter name'/>
+      <br/>
+     
+      <input type="submit" value="submit"/>
+     </form>
+
+
+
+      <h3>Names List</h3>
+      <ul>
+        {names?.map((person) => (
+          <li key={person.id}>
+            {person.id}. {person.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default App;
+-----------------------------------------------------
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  await addName({ name }).unwrap();
+  setName('');
+};
+
+1. const handleSubmit = async (e) => { ... }
+This defines an asynchronous function named handleSubmit.
+The function takes an event (e) as an argument, which is typically the form submission event.
+2. e.preventDefault();
+This prevents the default form submission behavior.
+Without this, the form would refresh the page when submitted, which is not what we want in a React app.
+
+Without .unwrap(), the error would not be caught properly in try...catch.
+
+=============================================================================
+
+3. await addName({ name }).unwrap();
+This is the most important part, so let's break it down further.
+
+A. addName({ name })
+addName is a function (probably from RTK Query mutation).
+{ name } is the object being passed to the function, which means we are sending { name: "some value" } to the API.
+This mutation is likely sending a POST request to add the name to the server.
+B. .unwrap()
+unwrap() is an RTK Query method that:
+Waits for the API call to complete (like .then())
+Throws an error if the API request fails (so you can handle it properly with try...catch)
+Returns the resolved response if the API call is successful.
+
+=============================================================================
+
+RTK Query caching directly data ko match nahi karta, balki kuch rules follow karta hai:
+
+Tag-based System – Jab aap data update (POST, PUT, DELETE) karte ho, to RTK Query us data ko invalid mark kar deta hai, jisse naye data ke liye API call hoti hai.
+Time-based Expiry – Cache ek fixed time (keepUnusedDataFor) tak store rehta hai. Jaise hi ye time khatam hota hai, API se naya data fetch ho jata hai.
+Auto Re-fetching – Agar aap refetchOnMountOrArgChange: true lagate ho, to component mount hone par automatically fresh data le leta hai.
+
+===========================================================================
+3️⃣ RTK Query me caching ka default expiry time kitna hota hai?
+👉 Answer: 60 seconds. Matlab agar 60 sec tak koi bhi component us data ko use nahi karega, to cache automatically delete ho jayega.
+
+5️⃣ RTK Query me agar cache me data hai to bhi API call forcefully kaise kar sakte hain?
+👉 Answer: refetch method ka use karke:
+
+=======================================================================
+
+ unwrap() Kya Karta Hai?
+unwrap() promise ko resolve/reject karta hai aur actual response deta hai.
+
+By default, addName({ name }) ek mutation trigger karta hai, jo ek { data, error } object return karta hai.
+
+unwrap() sirf data return karta hai (error aane par catch block chala deta hai).
+
+
+=============================================================================

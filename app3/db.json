@@ -1,0 +1,62 @@
+{
+  "names": [
+    {
+      "id": 1,
+      "name": "John Doe"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith"
+    },
+    {
+      "id": 3,
+      "name": "Alice Johnson"
+    },
+    {
+      "id": "dbf7",
+      "name": "random"
+    },
+    {
+      "id": "595f",
+      "name": "ravi"
+    },
+    {
+      "id": "e477",
+      "name": "sahil"
+    },
+    {
+      "id": "2033",
+      "name": "mohit"
+    },
+    {
+      "id": "59aa",
+      "name": "shubham"
+    },
+    {
+      "id": "c2d3",
+      "name": "himanshu"
+    },
+    {
+      "id": "909d",
+      "name": "ram"
+    }
+  ],
+  "games": [
+    {
+      "id": 6,
+      "name": "John Doe"
+    },
+    {
+      "id": 7,
+      "name": "Jane Smith"
+    },
+    {
+      "id": 8,
+      "name": "Alice Johnson"
+    },
+    {
+      "id": "9",
+      "name": "random"
+    }
+  ]
+}

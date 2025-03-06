@@ -1,0 +1,12 @@
+Api Slice Parameters
+--------------------
+
+When we call createApi, there are two fields that are required:
+
+1.baseQuery: 
+------------a fuction that fetch data from a server.
+------------fetchBaseQuery- fetch jaisa hi hai pr kuch additional cheze hai
+(that why it called wrapper of fetch) like automatically parsing json resoponse. simplifying error handling.
+
+
+2.endpoints:
